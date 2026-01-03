@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P6 C23 錯題學習教材 - 皮克斯風格</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        .nav-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        }
+
+        .nav-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            background: linear-gradient(to bottom, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-height: 700px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .slide-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .slide-header .page-info {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .content-box {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 6px solid #667eea;
+            line-height: 1.9;
+        }
+
+        .content-box h3 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+
+        .content-box p, .content-box li {
+            color: #333;
+            line-height: 1.9;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+        }
+
+        .content-box ul {
+            margin-left: 25px;
+        }
+
+        .correct-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left-color: #2ecc71;
+        }
+
+        .error-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-left-color: #e74c3c;
+        }
+
+        .screenshot-section {
+            background: #f5f5f5;
+            border-left-color: #888;
+            border-style: dashed;
+        }
+
+        .screenshot-wrapper {
+            width: 100%;
+            max-height: 350px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenshot-wrapper img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .keyword {
+            background: #ffd700;
+            color: #0052cc;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .mantra {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .pokemon-character {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 80px;
+            z-index: 10;
+        }
+
+        .sticky-note {
+            position: absolute;
+            bottom: 110px;
+            right: 20px;
+            width: 180px;
+            background: #ffeb3b;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            transform: rotate(-5deg);
+            border: 2px solid #fdd835;
+            z-index: 9;
+        }
+
+        .sticky-note p {
+            color: #0052cc;
+            font-weight: bold;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .progress-bar {
+            background: white;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .page-counter {
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .error-highlight {
+            background: #ffcccc;
+            color: #c0392b;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        .correct-highlight {
+            background: #ccffcc;
+            color: #27ae60;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 我的錯題學習本</h1>
+            <p>P6 C23 數專 - 百分數應用</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="previousSlide()" id="prevBtn">← 上一題</button>
+            <button onclick="nextSlide()" id="nextBtn">下一題 →</button>
+        </div>
+
+        <div class="page-counter">
+            第 <span id="currentPage">1</span> 題 / 共 <span id="totalPage">4</span> 題
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="slide-container" id="slideContainer">
+            <!-- Slides will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                pageNo: "P6",
+                title: "第 1 題 - 膠水百分數",
+                topic: "B.11~B.13_百分數",
+                imageFile: "P1.jpg",
+                problem: "文具店有筆 800 枝。膠水數量比筆多 12%，文具店共有筆和膠水多少枝？",
+                correctAnswer: "1696 枝",
+                steps: [
+                    "步驟 1：先算膠水數量：膠水 = 800 × (1 + 12%) = 800 × 1.12 = 896 枝。",
+                    "步驟 2：總數 = 筆 + 膠水 = 800 + 896 = 1696 枝。"
+                ],
+                errorType: "百分數理解錯／計算錯",
+                myError: "把「多 12%」當成「多 12 枝」，或只算 800 × 12% 沒有再加回原來 800。",
+                tip: "見到「比……多 / 少 x%」要先找「原來數」再乘 (1 ± x%)。",
+                mantra: "多％就乘 (1+％)，少％就乘 (1−％)",
+                nextTip: "題目有「比……多 / 少」先寫式：(原來數) × (1 ± 百分比)，不要只乘百分比。",
+                pokemon: "⚡",
+                pokemonName: "皮卡丘"
+            },
+            {
+                pageNo: "P7",
+                title: "第 2 題 - 複雜圖形面積",
+                topic: "B.16~B.18_容量和體積",
+                imageFile: "P05.jpg",
+                problem: "計算右圖多邊形的面積。",
+                correctAnswer: "1485 cm²",
+                steps: [
+                    "步驟 1：把多邊形想像成「大長方形」減去兩個小長方形或三角形。",
+                    "步驟 2：先算大長方形面積，再算要減去的小部分，最後相減得到 1485 cm²。"
+                ],
+                errorType: "圖形拆錯／邊長看錯",
+                myError: "拆圖時界線畫錯，或把某一邊長看成另一邊，令部分面積計錯。",
+                tip: "先用鉛筆在圖上畫出你要分的簡單圖形，再一個一個寫公式計面積。",
+                mantra: "複雜圖形 → 拆小圖形 → 分別求和",
+                nextTip: "做面積題時，先圈出每一個小圖形並寫上長、闊，再按公式，不要憑眼估。",
+                pokemon: "🌱",
+                pokemonName: "妙蛙種子"
+            },
+            {
+                pageNo: "P8",
+                title: "第 3 題 - 盒子內水的體積",
+                topic: "B.16~B.18_容量和體積",
+                imageFile: "P08.jpg",
+                problem: "求盒子內水的體積。（長 20 cm，闊 15 cm，高 12 cm）",
+                correctAnswer: "3600 cm³",
+                steps: [
+                    "步驟 1：寫出體積公式：體積 = 長 × 闊 × 高。",
+                    "步驟 2：代入數字：V = 20 × 15 × 12 = 3600 cm³。"
+                ],
+                errorType: "體積公式未完全掌握／邊長看錯",
+                myError: "把其中一條邊長看成 10 或 其他數，或只乘了兩個數，漏乘一個長度。",
+                tip: "計體積一定要確認「有三個長度」都出現在乘式。",
+                mantra: "體積一定是三個數相乘",
+                nextTip: "把三條邊用箭咀標成 L、W、H，再寫一行「V = L×W×H = ＿×＿×＿」，檢查自己有三個數。",
+                pokemon: "🔥",
+                pokemonName: "噴火龍"
+            },
+            {
+                pageNo: "P9",
+                title: "第 4 題 - 方程求 P + y",
+                topic: "B.11~B.13_百分數（方程）",
+                imageFile: "P06.jpg",
+                problem: "已知 2P = 8，11y + 2 = 68，求 P + y = ?",
+                correctAnswer: "P + y = 10",
+                steps: [
+                    "步驟 1：解第一個方程：2P = 8 → P = 4。",
+                    "步驟 2：解第二個方程：11y + 2 = 68 → 11y = 66 → y = 6。",
+                    "步驟 3：兩者相加：P + y = 4 + 6 = 10。"
+                ],
+                errorType: "方程解錯／代入錯",
+                myError: "把「移項」加減號寫反，或 66 ÷ 11 算錯，導致 P 或 y 錯。",
+                tip: "解方程時，先一步步寫清楚：移項 → 化簡 → 除以係數。",
+                mantra: "移過去變號，除係數得未知數",
+                nextTip: "做方程一定逐步寫：① 解 P；② 解 y；③ 最後才算 P + y，避免一次過心算。",
+                pokemon: "⚡",
+                pokemonName: "皮卡丘"
+            }
+        ];
+
+        let currentSlideIndex = 0;
+
+        document.getElementById('totalPage').textContent = slides.length;
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const container = document.getElementById('slideContainer');
+
+            const pokemonSticky = `
+                <div class="pokemon-character">${slide.pokemon}</div>
+                <div class="sticky-note">
+                    <p>💡 ${slide.mantra}</p>
+                </div>
+            `;
+
+            const screenshotHtml = `
+                <div class="content-box screenshot-section">
+                    <h3>📸 你的作答截圖</h3>
+                    <div class="screenshot-wrapper">
+                        <img src="./images/${slide.imageFile}" alt="${slide.title}">
+                    </div>
+                    <p style="font-size:0.95em;color:#555;">💭 先看看你當時是怎麼寫的，再對照下面的錯誤與正確做法。</p>
+                </div>
+            `;
+
+            const html = `
+                <div class="slide-header">
+                    <h2>${slide.title}</h2>
+                    <div class="page-info">${slide.pageNo} - ${slide.topic}</div>
+                </div>
+
+                ${screenshotHtml}
+
+                <div class="content-box error-section">
+                    <h3>❌ 你的錯誤</h3>
+                    <p><span class="keyword">錯誤類型</span>：${slide.errorType}</p>
+                    <p><span class="keyword">你原本錯在</span>：<span class="error-highlight">${slide.myError}</span></p>
+                </div>
+
+                <div class="content-box correct-section">
+                    <h3>✅ 正確做法</h3>
+                    <p><span class="keyword">正確答案</span>：<span class="correct-highlight">${slide.correctAnswer}</span></p>
+                    <p><span class="keyword">計算步驟</span>：</p>
+                    <ul>
+                        ${slide.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="content-box">
+                    <h3>💡 學習提示</h3>
+                    <p><span class="keyword">馬上提示</span>：${slide.tip}</p>
+                    <div class="mantra">${slide.mantra}</div>
+                    <p><span class="keyword">下次避免</span>：${slide.nextTip}</p>
+                </div>
+
+                ${pokemonSticky}
+            `;
+
+            container.innerHTML = html;
+
+            const progress = ((index + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentPage').textContent = index + 1;
+
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === slides.length - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        renderSlide(0);
+    </script>
+</body>
+</html>
